@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motion Detection using OpenCV, Webcam and Python Flask</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #video-container {
+            max-width: 800px;
+            margin: 20px auto;
+        }
+
+        #video-feed {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            border: 2px solid #333;
+        }
+
+        #notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #ffcc00;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.js"></script>
+    <script>
+        const socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        socket.on('motion_detected', function () {
+            const notification = document.getElementById('notification');
+            notification.style.display = 'block';
+
+            // Hide the notification after 5 seconds (adjust as needed)
+            setTimeout(function () {
+                notification.style.display = 'none';
+            }, 5000);
+        });
+    </script>
+</head>
+
+<body>
+    <h1>Motion Detection using OpenCV, Webcam and Python Flask</h1>
+
+    <div id="notification">
+        <p>Motion Detected! Check the video feed.</p>
+    </div>
+
+    <div id="video-container">
+        <img id="video-feed" src="{{ url_for('video_feed') }}" alt="Video Feed">
+    </div>
+</body>
+
+</html>
